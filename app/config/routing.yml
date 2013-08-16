@@ -1,0 +1,4 @@
+peterjmit_blog:
+    resource: "@PeterjmitBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+

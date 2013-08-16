@@ -11,4 +11,11 @@ class BlogControllerSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Peterjmit\BlogBundle\Controller\BlogController');
     }
+
+    function it_should_respond_to_index_action()
+    {
+        $response = $this->indexAction();
+
+        $response->shouldHaveType('Symfony\Component\HttpFoundation\Response');
+    }
 }

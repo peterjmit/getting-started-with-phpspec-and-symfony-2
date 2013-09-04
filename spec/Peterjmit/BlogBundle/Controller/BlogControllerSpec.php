@@ -61,4 +61,14 @@ class BlogControllerSpec extends ObjectBehavior
 
         $this->showAction(1)->shouldReturn($response);
     }
+
+    function it_throws_an_exception_if_a_blog_post_doesnt_exist(BlogManagerInterface $manager)
+    {
+        $manager->find(999)->willReturn(null);
+
+        $this
+            ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+            ->duringShowAction(999)
+        ;
+    }
 }

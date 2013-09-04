@@ -4,6 +4,7 @@ namespace Peterjmit\BlogBundle\Controller;
 
 use Peterjmit\BlogBundle\Model\BlogManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlogController
 {
@@ -30,7 +31,7 @@ class BlogController
         $post = $this->manager->find($id);
 
         if (!$post) {
-            throw $this->createNotFoundException(sprintf('Blog post %s was not found', $id));
+            throw new NotFoundHttpException(sprintf('Blog post %s was not found', $id));
         }
 
         return $this->templating->renderResponse('PeterjmitBlogBundle:Blog:show.html.twig', array(

@@ -15,4 +15,18 @@ class BlogController extends Controller
             'posts' => $posts
         ));
     }
+
+    public function showAction($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $post = $entityManager->getRepository('PeterjmitBlogBundle:Blog')->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException(sprintf('Blog post %s was not found', $id));
+        }
+
+        return $this->render('PeterjmitBlogBundle:Blog:show.html.twig', array(
+            'posts' => $posts
+        ));
+    }
 }

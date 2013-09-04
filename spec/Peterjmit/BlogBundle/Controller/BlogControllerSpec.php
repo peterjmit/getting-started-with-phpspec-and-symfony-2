@@ -29,12 +29,12 @@ class BlogControllerSpec extends ObjectBehavior
         EngineInterface $templating,
         Response $mockResponse
     ) {
-        $manager->findAll()->willReturn(array());
+        $manager->findAll()->willReturn(array('An array', 'of blog', 'posts!'));
 
         $templating
             ->renderResponse(
                 'PeterjmitBlogBundle:Blog:index.html.twig',
-                array('posts' => array())
+                array('posts' => array('An array', 'of blog', 'posts!'))
             )
             ->willReturn($mockResponse)
         ;

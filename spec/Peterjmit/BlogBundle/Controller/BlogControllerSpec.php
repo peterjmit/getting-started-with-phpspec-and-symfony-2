@@ -5,9 +5,7 @@ namespace spec\Peterjmit\BlogBundle\Controller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Peterjmit\BlogBundle\Model\BlogManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogControllerSpec extends ObjectBehavior
 {
     function let(
-        ManagerRegistry $registry,
-        ObjectManager $manager,
-        ObjectRepository $repository,
+        BlogManagerInterface $manager,
         EngineInterface $templating
     ) {
-        $registry->getManager()->willReturn($manager);
-        $manager->getRepository('PeterjmitBlogBundle:Blog')->willReturn($repository);
-
-        $this->beConstructedWith($registry, $templating);
+        $this->beConstructedWith($manager, $templating);
     }
 
     function it_is_initializable()
@@ -32,11 +25,11 @@ class BlogControllerSpec extends ObjectBehavior
     }
 
     function it_should_respond_to_index_action(
-        ObjectRepository $repository,
+        BlogManagerInterface $manager,
         EngineInterface $templating,
         Response $mockResponse
     ) {
-        $repository->findAll()->willReturn(array());
+        $manager->findAll()->willReturn(array());
 
         $templating
             ->renderResponse(

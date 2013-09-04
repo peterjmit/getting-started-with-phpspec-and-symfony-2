@@ -2,24 +2,23 @@
 
 namespace Peterjmit\BlogBundle\Controller;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Peterjmit\BlogBundle\Model\BlogManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class BlogController
 {
-    private $doctrine;
+    private $manager;
     private $templating;
 
-    public function __construct(ManagerRegistry $doctrine, EngineInterface $templating)
+    public function __construct(BlogManagerInterface $manager, EngineInterface $templating)
     {
-        $this->doctrine = $doctrine;
+        $this->manager = $manager;
         $this->templating = $templating;
     }
 
     public function indexAction()
     {
-        $entityManager = $this->doctrine->getManager();
-        $posts = $entityManager->getRepository('PeterjmitBlogBundle:Blog')->findAll();
+        $posts = $this->manager->findAll();
 
         return $this->templating->renderResponse('PeterjmitBlogBundle:Blog:index.html.twig', array(
             'posts' => $posts
@@ -28,8 +27,7 @@ class BlogController
 
     public function showAction($id)
     {
-        $entityManager = $this->doctrine->getManager();
-        $post = $entityManager->getRepository('PeterjmitBlogBundle:Blog')->find($id);
+        $post = $this->manager->find($id);
 
         if (!$post) {
             throw $this->createNotFoundException(sprintf('Blog post %s was not found', $id));

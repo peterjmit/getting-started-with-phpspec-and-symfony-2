@@ -36,7 +36,7 @@ class BlogController
         }
 
         return $this->templating->renderResponse('PeterjmitBlogBundle:Blog:show.html.twig', array(
-            'posts' => $posts
+            'post' => $post
         ));
     }
 }

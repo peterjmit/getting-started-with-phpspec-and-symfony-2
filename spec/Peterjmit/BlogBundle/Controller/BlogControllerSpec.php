@@ -43,4 +43,22 @@ class BlogControllerSpec extends ObjectBehavior
 
         $response->shouldHaveType('Symfony\Component\HttpFoundation\Response');
     }
+
+    function it_shows_a_single_blog_post(
+        BlogManagerInterface $manager,
+        EngineInterface $templating,
+        Response $response
+    ) {
+        $manager->find(1)->willReturn('A blog post');
+
+        $templating
+            ->renderResponse(
+                'PeterjmitBlogBundle:Blog:show.html.twig',
+                Argument::withEntry('post', 'A blog post')
+            )
+            ->willReturn($response)
+        ;
+
+        $this->showAction(1)->shouldReturn($response);
+    }
 }

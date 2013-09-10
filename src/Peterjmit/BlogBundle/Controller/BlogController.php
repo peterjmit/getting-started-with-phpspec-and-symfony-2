@@ -2,24 +2,24 @@
 
 namespace Peterjmit\BlogBundle\Controller;
 
-use Peterjmit\BlogBundle\Model\BlogManagerInterface;
+use Peterjmit\BlogBundle\Doctrine\BlogRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlogController
 {
-    private $manager;
+    private $repository;
     private $templating;
 
-    public function __construct(BlogManagerInterface $manager, EngineInterface $templating)
+    public function __construct(BlogRepository $repository, EngineInterface $templating)
     {
-        $this->manager = $manager;
+        $this->repository = $repository;
         $this->templating = $templating;
     }
 
     public function indexAction()
     {
-        $posts = $this->manager->findAll();
+        $posts = $this->repository->findAll();
 
         return $this->templating->renderResponse('PeterjmitBlogBundle:Blog:index.html.twig', array(
             'posts' => $posts
@@ -28,7 +28,7 @@ class BlogController
 
     public function showAction($id)
     {
-        $post = $this->manager->find($id);
+        $post = $this->repository->find($id);
 
         if (!$post) {
             throw new NotFoundHttpException(sprintf('Blog post %s was not found', $id));

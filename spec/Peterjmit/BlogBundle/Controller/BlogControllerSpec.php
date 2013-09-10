@@ -5,7 +5,7 @@ namespace spec\Peterjmit\BlogBundle\Controller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-use Peterjmit\BlogBundle\Model\BlogManagerInterface;
+use Peterjmit\BlogBundle\Doctrine\BlogRepository;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogControllerSpec extends ObjectBehavior
 {
     function let(
-        BlogManagerInterface $manager,
+        BlogRepository $repository,
         EngineInterface $templating
     ) {
-        $this->beConstructedWith($manager, $templating);
+        $this->beConstructedWith($repository, $templating);
     }
 
     function it_is_initializable()
@@ -25,11 +25,11 @@ class BlogControllerSpec extends ObjectBehavior
     }
 
     function it_should_respond_to_index_action(
-        BlogManagerInterface $manager,
+        BlogRepository $repository,
         EngineInterface $templating,
         Response $mockResponse
     ) {
-        $manager->findAll()->willReturn(array('An array', 'of blog', 'posts!'));
+        $repository->findAll()->willReturn(array('An array', 'of blog', 'posts!'));
 
         $templating
             ->renderResponse(
@@ -45,11 +45,11 @@ class BlogControllerSpec extends ObjectBehavior
     }
 
     function it_shows_a_single_blog_post(
-        BlogManagerInterface $manager,
+        BlogRepository $repository,
         EngineInterface $templating,
         Response $response
     ) {
-        $manager->find(1)->willReturn('A blog post');
+        $repository->find(1)->willReturn('A blog post');
 
         $templating
             ->renderResponse(
@@ -62,9 +62,9 @@ class BlogControllerSpec extends ObjectBehavior
         $this->showAction(1)->shouldReturn($response);
     }
 
-    function it_throws_an_exception_if_a_blog_post_doesnt_exist(BlogManagerInterface $manager)
+    function it_throws_an_exception_if_a_blog_post_doesnt_exist(BlogRepository $repository)
     {
-        $manager->find(999)->willReturn(null);
+        $repository->find(999)->willReturn(null);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')

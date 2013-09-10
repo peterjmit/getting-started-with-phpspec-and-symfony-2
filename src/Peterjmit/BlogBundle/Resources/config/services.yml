@@ -1,7 +1,3 @@
 parameters:
-#    peterjmit_blog.example.class: Peterjmit\BlogBundle\Example
 
 services:
-#    peterjmit_blog.example:
-#        class: %peterjmit_blog.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

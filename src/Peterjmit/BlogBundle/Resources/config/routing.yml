@@ -1,3 +1,0 @@
-peterjmit_blog_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: PeterjmitBlogBundle:Default:index }
